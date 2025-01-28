@@ -22,9 +22,16 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [markers, setMarkers] = useState<google.maps.Marker[]>([])
 
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+  if (!apiKey) {
+    console.error('Google Maps API key is not defined');
+    return <div>Map cannot be loaded</div>;
+  }
+
   useEffect(() => {
     const loader = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+      apiKey: apiKey,
       version: "weekly",
       libraries: ["places"],
     })
