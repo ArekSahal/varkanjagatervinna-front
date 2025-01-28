@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState, Suspense, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 import { Nav } from "../components/nav"
 import { GoogleMap } from "../components/google-map"

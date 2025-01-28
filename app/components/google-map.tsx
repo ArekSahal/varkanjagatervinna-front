@@ -22,7 +22,7 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [markers, setMarkers] = useState<google.maps.Marker[]>([])
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const apiKey = "AIzaSyBmml_2DzcExvh-wUkzMz9B8iqhKRIrqsw" //process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
     console.error('Google Maps API key is not defined');

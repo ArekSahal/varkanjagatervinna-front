@@ -27,7 +27,7 @@ export function LocationInput({ value, onChange, onSelect, placeholder, classNam
           try {
             if (typeof window !== "undefined" && window.google) {
               const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}`,
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key="AIzaSyBmml_2DzcExvh-wUkzMz9B8iqhKRIrqsw"`,
               )
               const data = await response.json()
               if (data.results && data.results.length > 0) {
