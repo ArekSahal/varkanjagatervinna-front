@@ -25,14 +25,18 @@ export function LocationInput({ value, onChange, onSelect, placeholder, classNam
         async (position) => {
           const { latitude, longitude } = position.coords
           try {
-            const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}`,
-            )
-            const data = await response.json()
-            if (data.results && data.results.length > 0) {
-              const address = data.results[0].formatted_address
-              onChange(address)
-              onSelect(address)
+            if (typeof window !== "undefined" && window.google) {
+              const response = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}`,
+              )
+              const data = await response.json()
+              if (data.results && data.results.length > 0) {
+                const address = data.results[0].formatted_address
+                onChange(address)
+                onSelect(address)
+              }
+            } else {
+              console.error("Google Maps API not loaded")
             }
           } catch (error) {
             console.error("Error fetching address:", error)
