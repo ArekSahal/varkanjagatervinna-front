@@ -18,29 +18,22 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, cl
   useEffect(() => {
     if (typeof window !== "undefined") {
       // This block will run only on the client (browser)
-      console.log("Running in the browser")
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
       if (!apiKey) {
         console.error('Google Maps API key is not configured')
         return
       }
-      // Perform client-side logic (e.g., Google Maps API)
-    } else {
-      console.log("Running on the server")
-      // This block will run only on the server (Node.js)
-    }
-  }, [])
-  
 
-    if (typeof window !== "undefined" && !window.google) {
-      const script = document.createElement("script")
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
-      script.async = true
-      script.defer = true
-      document.head.appendChild(script)
-      script.onload = initAutocomplete
-    } else if (typeof window !== "undefined" && window.google) {
-      initAutocomplete()
+      if (!window.google) {
+        const script = document.createElement("script")
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
+        script.async = true
+        script.defer = true
+        document.head.appendChild(script)
+        script.onload = initAutocomplete
+      } else {
+        initAutocomplete()
+      }
     }
 
     return () => {
