@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, type KeyboardEvent } from "react"
 import { Input } from "@/components/ui/input"
 
-const keywords = ["plast", "kartong", "färgat glas", "ofärgat glas", "glas"]
+const keywords = ["plast", "kartong", "färgat glas", "ofärgat glas", "glas","Tidningar"]
 
 interface AutocompleteInputProps {
   placeholder: string
