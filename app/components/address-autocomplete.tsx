@@ -18,6 +18,7 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, cl
   useEffect(() => {
     if (typeof window !== "undefined") {
       // This block will run only on the client (browser)
+      console.log("Running in the browser")
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
       if (!apiKey) {
         console.error('Google Maps API key is not configured')
@@ -34,6 +35,9 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, cl
       } else {
         initAutocomplete()
       }
+    } else {
+      console.log("Running on the server")
+      // This block will run only on the server (Node.js)
     }
 
     return () => {
