@@ -41,10 +41,11 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
         setMap(newMap)
       }
     })
-  }, [locations.length, locations[0]?.latitude, locations[0]?.longitude]) // Added missing dependencies
+  }, [locations.length, locations[0]?.latitude, locations[0]?.longitude])
 
   useEffect(() => {
     if (map && locations.length > 0) {
+      const typedMap = map as google.maps.Map
       // Clear existing markers
       markers.forEach((marker) => marker.setMap(null))
       const newMarkers: google.maps.Marker[] = []
@@ -54,7 +55,7 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
       locations.forEach((location, index) => {
         const marker = new google.maps.Marker({
           position: { lat: location.latitude, lng: location.longitude },
-          map: map,
+          map: typedMap,
           label: {
             text: String.fromCharCode(65 + index),
             color: "white",
@@ -77,20 +78,22 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
         })
 
         marker.addListener("click", () => {
-          infoWindow.open(map, marker)
+          infoWindow.open(typedMap, marker)
         })
       })
 
       setMarkers(newMarkers)
-      map.fitBounds(bounds)
+      typedMap.fitBounds(bounds)
 
       // Adjust zoom if it's too high (e.g., when there's only one location)
-      const listener = google.maps.event.addListener(map, "idle", () => {
-        if (map.getZoom() > 15) map.setZoom(15)
+      const listener = google.maps.event.addListener(typedMap, "idle", () => {
+        if (typedMap && typedMap.getZoom() && typedMap.getZoom() > 15) {
+          typedMap.setZoom(15)
+        }
         google.maps.event.removeListener(listener)
       })
     }
-  }, [map, locations])
+  }, [map, locations, markers]) // Added markers to dependencies
 
   useEffect(() => {
     if (map && selectedLocation) {
