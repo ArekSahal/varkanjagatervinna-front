@@ -87,7 +87,8 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
 
       // Adjust zoom if it's too high (e.g., when there's only one location)
       const listener = google.maps.event.addListener(typedMap, "idle", () => {
-        if (typedMap && typedMap.getZoom() && typedMap.getZoom() > 15) {
+        const zoom = typedMap.getZoom()
+        if (zoom && zoom > 15) {
           typedMap.setZoom(15)
         }
         google.maps.event.removeListener(listener)
