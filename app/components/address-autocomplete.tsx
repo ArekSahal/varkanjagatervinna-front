@@ -16,11 +16,21 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, cl
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
   useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    if (!apiKey) {
-      console.error('Google Maps API key is not configured')
-      return
+    if (typeof window !== "undefined") {
+      // This block will run only on the client (browser)
+      console.log("Running in the browser")
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+      if (!apiKey) {
+        console.error('Google Maps API key is not configured')
+        return
+      }
+      // Perform client-side logic (e.g., Google Maps API)
+    } else {
+      console.log("Running on the server")
+      // This block will run only on the server (Node.js)
     }
+  }, [])
+  
 
     if (typeof window !== "undefined" && !window.google) {
       const script = document.createElement("script")
