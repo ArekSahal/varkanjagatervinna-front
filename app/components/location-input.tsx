@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { MapPin } from "lucide-react"
@@ -18,7 +18,7 @@ interface LocationInputProps {
 export function LocationInput({ value, onChange, onSelect, placeholder, className, error }: LocationInputProps) {
   const [isLocating, setIsLocating] = useState(false)
 
-  const handleUseCurrentLocation = () => {
+  const handleUseCurrentLocation = useCallback(() => {
     setIsLocating(true)
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -27,7 +27,7 @@ export function LocationInput({ value, onChange, onSelect, placeholder, classNam
           try {
             if (typeof window !== "undefined" && window.google) {
               const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key="AIzaSyBmml_2DzcExvh-wUkzMz9B8iqhKRIrqsw"`,
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}`,
               )
               const data = await response.json()
               if (data.results && data.results.length > 0) {
@@ -53,7 +53,7 @@ export function LocationInput({ value, onChange, onSelect, placeholder, classNam
       console.error("Geolocation is not supported by this browser.")
       setIsLocating(false)
     }
-  }
+  }, [onChange, onSelect])
 
   return (
     <div className="relative">

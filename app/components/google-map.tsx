@@ -22,16 +22,9 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [markers, setMarkers] = useState<google.maps.Marker[]>([])
 
-  const apiKey = "AIzaSyBmml_2DzcExvh-wUkzMz9B8iqhKRIrqsw" //process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
-  if (!apiKey) {
-    console.error('Google Maps API key is not defined');
-    return <div>Map cannot be loaded</div>;
-  }
-
   useEffect(() => {
     const loader = new Loader({
-      apiKey: apiKey,
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
       version: "weekly",
       libraries: ["places"],
     })
@@ -94,14 +87,14 @@ export function GoogleMap({ locations, selectedLocation }: GoogleMapProps) {
 
       // Adjust zoom if it's too high (e.g., when there's only one location)
       const listener = google.maps.event.addListener(typedMap, "idle", () => {
-        const zoom = typedMap.getZoom()
-        if (zoom && zoom > 15) {
+        const currentZoom = typedMap.getZoom()
+        if (currentZoom !== undefined && currentZoom > 15) {
           typedMap.setZoom(15)
         }
         google.maps.event.removeListener(listener)
       })
     }
-  }, [map, locations, markers]) // Added markers to dependencies
+  }, [map, locations]) // Removed markers from dependencies
 
   useEffect(() => {
     if (map && selectedLocation) {

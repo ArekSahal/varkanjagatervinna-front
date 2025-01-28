@@ -9,7 +9,6 @@ import { AutocompleteInput } from "./components/autocomplete-input"
 import { LocationInput } from "./components/location-input"
 
 export default function Home() {
-  console.log("API Key:", process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY)
   const [recycleItem, setRecycleItem] = useState("")
   const [location, setLocation] = useState("")
   const [errors, setErrors] = useState({ recycleItem: false, location: false })

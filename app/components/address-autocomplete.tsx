@@ -16,28 +16,15 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, cl
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // This block will run only on the client (browser)
-      console.log("Running in the browser")
-      const apiKey = "AIzaSyBmml_2DzcExvh-wUkzMz9B8iqhKRIrqsw" //process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-      if (!apiKey) {
-        console.error('Google Maps API key is not configured')
-        return
-      }
-
-      if (!window.google) {
-        const script = document.createElement("script")
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
-        script.async = true
-        script.defer = true
-        document.head.appendChild(script)
-        script.onload = initAutocomplete
-      } else {
-        initAutocomplete()
-      }
-    } else {
-      console.log("Running on the server")
-      // This block will run only on the server (Node.js)
+    if (typeof window !== "undefined" && !window.google) {
+      const script = document.createElement("script")
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}&libraries=places`
+      script.async = true
+      script.defer = true
+      document.head.appendChild(script)
+      script.onload = initAutocomplete
+    } else if (typeof window !== "undefined" && window.google) {
+      initAutocomplete()
     }
 
     return () => {
