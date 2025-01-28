@@ -7,6 +7,4 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  [plugins.inputs]
-    version = "5.9.4"
 
