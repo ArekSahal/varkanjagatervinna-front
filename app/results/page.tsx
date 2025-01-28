@@ -18,6 +18,21 @@ interface Location {
 }
 
 export default function Results() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col min-h-screen">
+        <Nav />
+        <main className="flex-1 p-4 md:p-6">
+          <p className="text-center text-xl dark:text-white">Loading...</p>
+        </main>
+      </div>
+    }>
+      <ResultsContent />
+    </Suspense>
+  )
+}
+
+function ResultsContent() {
   const [locations, setLocations] = useState<Location[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
